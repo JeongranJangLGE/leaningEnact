@@ -1,8 +1,9 @@
 import kind from '@enact/core/kind';
 import {Layout, Cell} from '@enact/ui/Layout';
 import {Panel} from '@enact/moonstone/Panels';
-import Scroller from '@enact/ui/Scroller';
 import React from 'react';
+import Scroller from '@enact/ui/Scroller';
+
 import CustomersList from '../components/CustomersList/CustomersList';
 import ProfileForm from '../components/ProfileForm/ProfileForm';
 
@@ -13,10 +14,10 @@ const MainPanel = kind({
 		<Panel {...props}>
 			<h1>Customer Management System</h1>
 			<Layout>
-				<Cell size="500px">
+				<Cell component="div" shrink>
 					<ProfileForm />
 				</Cell>
-				<Cell shrink>
+				<Cell component="div">
 					<Scroller direction="vertical">
 						<CustomersList />
 					</Scroller>

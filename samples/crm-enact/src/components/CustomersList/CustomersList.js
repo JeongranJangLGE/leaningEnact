@@ -1,43 +1,44 @@
 import {connect} from 'react-redux';
+import kind from '@enact/core/kind';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React from 'react';
+
 import {displayCustomer} from '../../actions/actions';
 
-class CustomersListBase extends Component {
-	displayHandle = (e) => {
-		const {onDisplayItem} = this.props;
-		onDisplayItem(e.target.getAttribute('index'));
-	}
-	render() {
-		const {customers} = this.props;
+const CustomersListBase = kind({
+	name: 'CustomersListBase',
+
+	propTypes: {
+		customers: PropTypes.array,
+		onDisplayItem: PropTypes.func
+	},
+
+	handlers: {
+		displayHandle: (e, {onDisplayItem}) => {
+			onDisplayItem(e.target.getAttribute('index'));
+		}
+	},
+
+	render: ({displayHandle, customers}) => {
+		let items = customers.map(({mail, name}, index) =>
+			<li
+				key={mail}
+				name={mail}
+				index={index}
+				onClick={displayHandle}
+			>
+				{name}
+			</li>
+		);
 		return (
 			<div>
 				<ul>
-					{
-						(customers.length === 0) ?
-						<p>No customer listed. (Add a customer)</p>
-							:
-							customers.map(({mail, name}, index) =>
-								<li
-									key={mail}
-									name={mail}
-									index={index}
-									onClick={this.displayHandle}
-								>
-									{name}
-								</li>
-							)
-					}
+					{(customers.length === 0) ? <p>No customer listed. (Add a customer)</p> : items}
 				</ul>
 			</div>
 		)
 	}
-};
-
-CustomersListBase.propTypes = {
-	customers: PropTypes.array,
-	onDisplayItem: PropTypes.func
-};
+});
 
 const CustomersList = connect(
 	state => ({
